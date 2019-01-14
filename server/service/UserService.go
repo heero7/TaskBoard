@@ -15,3 +15,8 @@ type UserService struct {
 func NewUserService(config *models.Config, userRepo *repository.UserRepository) *UserService {
 	return &UserService{config: config, userRepo: userRepo}
 }
+
+// CreateUser :
+func (service *UserService) CreateUser(email string, password string) {
+	service.userRepo.CreateUser(email, password)
+}
