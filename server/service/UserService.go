@@ -5,18 +5,18 @@ import (
 	"TaskBoard/server/repository"
 )
 
-// UserService :
+// UserService : Struct that holds the properties for the UserService
 type UserService struct {
 	config   *models.Config
 	userRepo *repository.UserRepository
 }
 
-// NewUserService :
+// NewUserService : Creates a new instance of the UserService
 func NewUserService(config *models.Config, userRepo *repository.UserRepository) *UserService {
 	return &UserService{config: config, userRepo: userRepo}
 }
 
-// CreateUser :
-func (service *UserService) CreateUser(email string, password string) {
-	service.userRepo.CreateUser(email, password)
+// CreateUser : Service to create a user via the UserRepository
+func (service *UserService) CreateUser(email string, password string) error {
+	return service.userRepo.CreateUser(email, password)
 }

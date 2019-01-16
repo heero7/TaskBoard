@@ -5,6 +5,7 @@ import (
 	"TaskBoard/server/service"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -12,7 +13,7 @@ import (
 	gorilla "github.com/gorilla/mux"
 )
 
-// Server :
+// Server : Struct that holds the config and the services
 type Server struct {
 	config      *models.Config
 	userService *service.UserService
@@ -41,16 +42,25 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 	decoder := json.NewDecoder(request.Body)
 
 	var u models.User
+
 	err := decoder.Decode(&u)
+
+	if err != nil && err == io.EOF {
+		// send bad response
+		br := createResponse(http.StatusBadRequest, "Empty request body")
+		writer.Write(br)
+	}
+	//todo: this should return something to indicate good response
+	err = server.userService.CreateUser(u.Email, u.Password)
 
 	if err != nil {
 		// send bad response
 		br := createResponse(http.StatusInternalServerError, err.Error())
 		writer.Write(br)
-		return
+	} else {
+		br := createResponse(http.StatusOK, fmt.Sprintf("Success creating user %s", u.Email))
+		writer.Write(br)
 	}
-	//todo: this should return something to indicate good response
-	server.userService.CreateUser(u.Email, u.Password)
 }
 
 // Handler :
@@ -60,11 +70,11 @@ func (server *Server) handler() *gorilla.Router {
 	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Write(createResponse(http.StatusOK, "Hello, World"))
 	}).Methods("GET")
-	r.HandleFunc("/api/v1/", server.createUser).Methods("POST")
+	r.HandleFunc("/api/v1/signup", server.createUser).Methods("POST")
 	return r
 }
 
-// NewServer :
+// NewServer : Create a new server instance
 func NewServer(config *models.Config, userService *service.UserService) *Server {
 	return &Server{
 		config:      config,
@@ -72,7 +82,7 @@ func NewServer(config *models.Config, userService *service.UserService) *Server 
 	}
 }
 
-// Start :
+// Start : Start listening on the port then serve
 func (server *Server) Start() {
 	// might want to just do the handler and listenAndServe here
 	// Why? Need to do research and see if you can ensure Methods are POST
@@ -83,6 +93,6 @@ func (server *Server) Start() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	fmt.Println("Starting server.. on port :8080")
+	fmt.Println("Starting server.. on port", httpServer.Addr)
 	log.Fatal(httpServer.ListenAndServe())
 }

@@ -4,6 +4,8 @@ import (
 	"TaskBoard/server/models"
 	"database/sql"
 	"fmt"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // ConnectPostgresDatabase :
@@ -17,6 +19,11 @@ func ConnectPostgresDatabase(config *models.Config) (*sql.DB, error) {
 
 // GenerateUID :
 // Generates a unique ID in form a string
-func GenerateUID() string {
-	return ""
+func GenerateUID() (string, error) {
+	uid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+	return uid.String(), nil
+
 }

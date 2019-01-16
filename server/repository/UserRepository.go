@@ -20,13 +20,19 @@ func NewUserRepository(database *sql.DB) *UserRepository {
 
 // CreateUser : Create a user with an email and password
 // todo: should we return a UID?
-func (userRepo *UserRepository) CreateUser(email string, password string) {
+func (userRepo *UserRepository) CreateUser(email string, password string) error {
 	fmt.Println("#SQL - INSERT#")
 	sqlStatement := `
 		INSERT INTO "Users" (email, password, uid)
 		VALUES ($1, $2, $3)
 	`
-	uid := GenerateUID()
-	userRepo.database.QueryRow(sqlStatement, email, password, uid)
-	// todo: error check here
+	uid, err := GenerateUID()
+	if err != nil {
+		return err
+	}
+	_, err = userRepo.database.Exec(sqlStatement, email, password, uid)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
 }
