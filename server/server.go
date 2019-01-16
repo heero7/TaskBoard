@@ -11,6 +11,7 @@ import (
 	"time"
 
 	gorilla "github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Server : Struct that holds the config and the services
@@ -28,6 +29,11 @@ func createResponse(status int, message string) []byte {
 	res := response{Status: status, Message: message}
 	js, _ := json.Marshal(&res)
 	return js
+}
+
+func generateHashPassword(password string) string {
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 8)
+	return string(hashPassword)
 }
 
 func contentTypeMiddleware(nextMethod http.Handler) http.Handler {
@@ -51,7 +57,8 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 		writer.Write(br)
 	}
 	//todo: this should return something to indicate good response
-	err = server.userService.CreateUser(u.Email, u.Password)
+
+	err = server.userService.CreateUser(u.Email, generateHashPassword(u.Password))
 
 	if err != nil {
 		// send bad response
@@ -63,13 +70,17 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 	}
 }
 
-// Handler :
+
 func (server *Server) handler() *gorilla.Router {
 	r := gorilla.NewRouter()
 	r.Use(contentTypeMiddleware)
+
+	// BEGIN TEST ROUTES
 	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Write(createResponse(http.StatusOK, "Hello, World"))
 	}).Methods("GET")
+	// END TEST ROUTES
+
 	r.HandleFunc("/api/v1/signup", server.createUser).Methods("POST")
 	return r
 }

@@ -1,3 +1,4 @@
 db.config.json
-server/vendor/github.com
+server/vendor/*
+!server/vendor/vendor.json
 \.vscode/launch\.json
