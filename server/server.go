@@ -11,7 +11,6 @@ import (
 	"time"
 
 	gorilla "github.com/gorilla/mux"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Server : Struct that holds the config and the services
@@ -31,18 +30,6 @@ func createResponse(status int, message string) []byte {
 	return js
 }
 
-func generateHashPassword(password string) string {
-	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 8)
-	return string(hashPassword)
-}
-
-func contentTypeMiddleware(nextMethod http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("Content-Type", "application/json")
-		nextMethod.ServeHTTP(w, r)
-	})
-}
-
 func (server *Server) createUser(writer http.ResponseWriter, request *http.Request) {
 
 	decoder := json.NewDecoder(request.Body)
@@ -55,25 +42,30 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 		// send bad response
 		br := createResponse(http.StatusBadRequest, "Empty request body")
 		writer.Write(br)
+		return
 	}
 	//todo: this should return something to indicate good response
 
-	err = server.userService.CreateUser(u.Email, generateHashPassword(u.Password))
+	err = server.userService.CreateUser(u.Email, u.Password)
 
 	if err != nil {
 		// send bad response
 		br := createResponse(http.StatusInternalServerError, err.Error())
 		writer.Write(br)
-	} else {
-		br := createResponse(http.StatusOK, fmt.Sprintf("Success creating user %s", u.Email))
-		writer.Write(br)
+		return
 	}
+	br := createResponse(http.StatusOK, fmt.Sprintf("Success creating user %s", u.Email))
+	writer.Write(br)
+	return
 }
 
+func signIn(writer http.ResponseWriter, request *http.Request) {
+
+}
 
 func (server *Server) handler() *gorilla.Router {
 	r := gorilla.NewRouter()
-	r.Use(contentTypeMiddleware)
+	r.Use(jwtAuthMiddleware)
 
 	// BEGIN TEST ROUTES
 	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
@@ -81,7 +73,22 @@ func (server *Server) handler() *gorilla.Router {
 	}).Methods("GET")
 	// END TEST ROUTES
 
+	// todo: Place user routes
 	r.HandleFunc("/api/v1/signup", server.createUser).Methods("POST")
+	r.HandleFunc("/api/v1/signin", func(w http.ResponseWriter, r *http.Request) {
+		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+	})
+	// END USER ROUTES
+
+	// todo: Place task routes
+	// List all tasks for a given user.. UID should be in the context of the JWT token
+	r.HandleFunc("/api/v1/tasks", func(w http.ResponseWriter, r *http.Request) {
+		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+	}).Methods("GET")
+	r.HandleFunc("/api/v1/tasks/{id}", func(w http.ResponseWriter, r *http.Request) {
+		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+	}).Methods("GET")
+	// END TASK ROUTES
 	return r
 }
 
