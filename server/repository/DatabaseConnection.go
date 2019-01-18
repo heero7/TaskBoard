@@ -5,8 +5,17 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jinzhu/gorm"
+
 	uuid "github.com/satori/go.uuid"
 )
+
+// ConnectPostgresDatabaseViaGorm :
+func ConnectPostgresDatabaseViaGorm(config *models.Config) (*gorm.DB, error) {
+	dbinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Host, config.Port, config.User, config.Password, config.Dbname)
+	return gorm.Open("postgres", dbinfo)
+}
 
 // ConnectPostgresDatabase :
 // Establishes connection to the Postgres database

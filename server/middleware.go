@@ -25,7 +25,7 @@ func contentTypeMiddleware(nextMethod http.Handler) http.Handler {
 
 func jwtAuthMiddleware(nextMethod http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		doNotAuth := []string{"/api/v1/signup", "/api/v1/signin"}
+		doNotAuth := []string{"/", "/api/v1/signup", "/api/v1/signin"}
 		requestPath := r.URL.Path
 
 		// Do not need to authenticate for these routes

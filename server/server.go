@@ -3,6 +3,7 @@ package main
 import (
 	"TaskBoard/server/models"
 	"TaskBoard/server/service"
+	"TaskBoard/server/util"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -40,17 +41,17 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 
 	if err != nil && err == io.EOF {
 		// send bad response
-		br := createResponse(http.StatusBadRequest, "Empty request body")
-		writer.Write(br)
+		br := util.Message(http.StatusBadRequest, "Empty request body")
+		util.Respond(writer, br)
 		return
 	}
 	//todo: this should return something to indicate good response
 
-	err = server.userService.CreateUser(u.Email, u.Password)
+	res := server.userService.CreateUser(u.Email, u.Password)
 
-	if err != nil {
+	if res["status"] == 500 {
 		// send bad response
-		br := createResponse(http.StatusInternalServerError, err.Error())
+		br := createResponse(http.StatusInternalServerError, "Could not create user")
 		writer.Write(br)
 		return
 	}

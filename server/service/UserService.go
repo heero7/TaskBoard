@@ -17,6 +17,11 @@ func NewUserService(config *models.Config, userRepo *repository.UserRepository) 
 }
 
 // CreateUser : Service to create a user via the UserRepository
-func (service *UserService) CreateUser(email string, password string) error {
+func (service *UserService) CreateUser(email string, password string) map[string]interface{} {
 	return service.userRepo.CreateUser(email, password)
+}
+
+// Authenticate : Will attempt to login a character
+func (service *UserService) Authenticate(email string, password string) error {
+	return nil
 }

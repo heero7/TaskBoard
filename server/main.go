@@ -13,11 +13,12 @@ func main() {
 
 	config := models.NewConfig()
 
-	db, err := repository.ConnectPostgresDatabase(config)
-
+	db, err := repository.ConnectPostgresDatabaseViaGorm(config)
 	if err != nil {
 		panic(err)
 	}
+
+	db.Debug().AutoMigrate(&models.User{}, &models.User{})
 
 	userRepo := repository.NewUserRepository(db)
 
