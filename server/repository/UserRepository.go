@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
+
 	"github.com/jinzhu/gorm"
 
 	"golang.org/x/crypto/bcrypt"
@@ -42,7 +44,7 @@ func (userRepo *UserRepository) CreateUser(email string, password string) map[st
 	}
 	hash := generateHashPassword(password)
 
-	user := models.User{
+	user := &models.User{
 		Email:    email,
 		Password: hash,
 		UID:      uid,
@@ -53,14 +55,20 @@ func (userRepo *UserRepository) CreateUser(email string, password string) map[st
 	if user.ID <= 0 {
 		return util.Message(http.StatusInternalServerError, "Error creating user")
 	}
-	// Here we will create JWT token
+	user.Password = ""
+	user.UID = ""
+	user.Token = userRepo.createToken(uid)
+
 	gr := util.Message(http.StatusOK, "Successfully created user")
-	gr["user"] = nil
+	gr["user"] = user
 	return gr
 }
 
-func (userRepo *UserRepository) createToken() {
-
+func (userRepo *UserRepository) createToken(uid string) string {
+	tkModel := models.Token{UID: uid}
+	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tkModel)
+	tokenString, _ := token.SignedString([]byte("password"))
+	return tokenString
 }
 
 func (userRepo *UserRepository) validate() {

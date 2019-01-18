@@ -9,6 +9,6 @@ type Task struct {
 	gorm.Model
 	Name     string
 	Priority int
-	ID       string
+	TID      string
 	UID      string
 }

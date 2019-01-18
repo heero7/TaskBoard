@@ -12,4 +12,5 @@ type User struct {
 	Email    string
 	Password string
 	UID      string
+	Token    string `sql:"-"`
 }

@@ -18,7 +18,7 @@ func main() {
 		panic(err)
 	}
 
-	db.Debug().AutoMigrate(&models.User{}, &models.User{})
+	db.Debug().AutoMigrate(&models.User{}, &models.Task{})
 
 	userRepo := repository.NewUserRepository(db)
 

@@ -42,6 +42,7 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 	if err != nil && err == io.EOF {
 		// send bad response
 		br := util.Message(http.StatusBadRequest, "Empty request body")
+		writer.WriteHeader(http.StatusInternalServerError)
 		util.Respond(writer, br)
 		return
 	}
@@ -51,12 +52,13 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 
 	if res["status"] == 500 {
 		// send bad response
-		br := createResponse(http.StatusInternalServerError, "Could not create user")
-		writer.Write(br)
+		br := util.Message(http.StatusInternalServerError, "Could not create user")
+		writer.WriteHeader(http.StatusInternalServerError)
+		util.Respond(writer, br)
 		return
 	}
-	br := createResponse(http.StatusOK, fmt.Sprintf("Success creating user %s", u.Email))
-	writer.Write(br)
+
+	util.Respond(writer, res)
 	return
 }
 
@@ -69,25 +71,29 @@ func (server *Server) handler() *gorilla.Router {
 	r.Use(jwtAuthMiddleware)
 
 	// BEGIN TEST ROUTES
-	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write(createResponse(http.StatusOK, "Hello, World"))
+	r.HandleFunc("/", func(w http.ResponseWriter, request *http.Request) {
+		res := util.Message(http.StatusOK, "Hello, World")
+		util.Respond(w, res)
 	}).Methods("GET")
 	// END TEST ROUTES
 
 	// todo: Place user routes
 	r.HandleFunc("/api/v1/signup", server.createUser).Methods("POST")
 	r.HandleFunc("/api/v1/signin", func(w http.ResponseWriter, r *http.Request) {
-		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+		res := util.Message(http.StatusNoContent, "Not yet implemented...")
+		util.Respond(w, res)
 	})
 	// END USER ROUTES
 
 	// todo: Place task routes
 	// List all tasks for a given user.. UID should be in the context of the JWT token
 	r.HandleFunc("/api/v1/tasks", func(w http.ResponseWriter, r *http.Request) {
-		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+		res := util.Message(http.StatusNoContent, "Not yet implemented...")
+		util.Respond(w, res)
 	}).Methods("GET")
 	r.HandleFunc("/api/v1/tasks/{id}", func(w http.ResponseWriter, r *http.Request) {
-		w.Write(createResponse(http.StatusNoContent, "Not yet implemented..."))
+		res := util.Message(http.StatusNoContent, "Not yet implemented...")
+		util.Respond(w, res)
 	}).Methods("GET")
 	// END TASK ROUTES
 	return r
