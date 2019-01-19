@@ -9,8 +9,8 @@ import (
 // property exists.
 type User struct {
 	gorm.Model
-	Email    string
-	Password string
+	Email    string `json:"email"`
+	Password string `json:"password"`
 	UID      string
 	Token    string `sql:"-"`
 }

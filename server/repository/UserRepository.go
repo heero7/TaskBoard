@@ -76,6 +76,29 @@ func (userRepo *UserRepository) validate() {
 }
 
 // Authenticate : Logs a user in if the credentials are correct
-func (userRepo *UserRepository) Authenticate(email string, password string) (map[string]interface{}, error) {
-	return nil, nil
+func (userRepo *UserRepository) Authenticate(email, password string) map[string]interface{} {
+	user := &models.User{}
+	err := userRepo.database.Table("users").Where("email = ?", email).First(user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return util.Message(http.StatusNotFound, "Email address not found")
+		}
+		return util.Message(http.StatusInternalServerError, "Error finding email address, please try again")
+	}
+
+	// Found the email now lets compare the hash to the password receive
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		// Incorrect credentials!
+		return util.Message(http.StatusInternalServerError, "Invalid credentials logged in")
+	}
+
+	// Success matching the two passwords
+	user.Token = userRepo.createToken(user.UID)
+	user.UID = ""
+	user.Password = ""
+
+	res := util.Message(http.StatusOK, "User was successfully logged in")
+	res["user"] = user
+	return res
 }

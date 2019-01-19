@@ -22,6 +22,6 @@ func (service *UserService) CreateUser(email string, password string) map[string
 }
 
 // Authenticate : Will attempt to login a character
-func (service *UserService) Authenticate(email string, password string) error {
-	return nil
+func (service *UserService) Authenticate(email string, password string) map[string]interface{} {
+	return service.userRepo.Authenticate(email, password)
 }

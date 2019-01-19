@@ -46,7 +46,6 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 		util.Respond(writer, br)
 		return
 	}
-	//todo: this should return something to indicate good response
 
 	res := server.userService.CreateUser(u.Email, u.Password)
 
@@ -62,8 +61,28 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 	return
 }
 
-func signIn(writer http.ResponseWriter, request *http.Request) {
+func (server *Server) signIn(writer http.ResponseWriter, request *http.Request) {
+	decoder := json.NewDecoder(request.Body)
+	var u models.User
 
+	err := decoder.Decode(&u)
+
+	fmt.Println(u.Email)
+	if err != nil && err == io.EOF {
+		// send bad response
+		br := util.Message(http.StatusBadRequest, "Empty request body")
+		writer.WriteHeader(http.StatusInternalServerError)
+		util.Respond(writer, br)
+		return
+	}
+
+	res := server.userService.Authenticate(u.Email, u.Password)
+
+	if res["status"] == 404 || res["status"] == 500 {
+		util.Respond(writer, res)
+		return
+	}
+	util.Respond(writer, res)
 }
 
 func (server *Server) handler() *gorilla.Router {
@@ -77,15 +96,10 @@ func (server *Server) handler() *gorilla.Router {
 	}).Methods("GET")
 	// END TEST ROUTES
 
-	// todo: Place user routes
 	r.HandleFunc("/api/v1/signup", server.createUser).Methods("POST")
-	r.HandleFunc("/api/v1/signin", func(w http.ResponseWriter, r *http.Request) {
-		res := util.Message(http.StatusNoContent, "Not yet implemented...")
-		util.Respond(w, res)
-	})
+	r.HandleFunc("/api/v1/signin", server.signIn).Methods("POST")
 	// END USER ROUTES
 
-	// todo: Place task routes
 	// List all tasks for a given user.. UID should be in the context of the JWT token
 	r.HandleFunc("/api/v1/tasks", func(w http.ResponseWriter, r *http.Request) {
 		res := util.Message(http.StatusNoContent, "Not yet implemented...")
