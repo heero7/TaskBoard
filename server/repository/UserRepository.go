@@ -5,6 +5,7 @@ import (
 	"TaskBoard/server/util"
 	"fmt"
 	"net/http"
+	"strings"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
@@ -50,6 +51,12 @@ func (userRepo *UserRepository) CreateUser(email string, password string) map[st
 		UID:      uid,
 	}
 
+	valid := userRepo.validate(user)
+
+	if valid != nil {
+		return valid
+	}
+
 	userRepo.database.Create(user)
 
 	if user.ID <= 0 {
@@ -71,8 +78,26 @@ func (userRepo *UserRepository) createToken(uid string) string {
 	return tokenString
 }
 
-func (userRepo *UserRepository) validate() {
+func (userRepo *UserRepository) validate(user *models.User) map[string]interface{} {
+	if !strings.Contains(user.Email, "@") {
+		return util.Message(http.StatusBadRequest, "Invalid email")
+	}
 
+	if len(user.Password) < 6 {
+		return util.Message(http.StatusBadRequest, "Password length requirement not met")
+	}
+
+	// check for duplicate email
+	check := &models.User{}
+	err := userRepo.database.Table("users").Where("email = ?", user.Email).First(check).Error
+	if err != nil {
+		return util.Message(http.StatusInternalServerError, "Error, please try again")
+	}
+
+	if check.Email != "" {
+		return util.Message(http.StatusBadRequest, "This email is already taken")
+	}
+	return nil
 }
 
 // Authenticate : Logs a user in if the credentials are correct
