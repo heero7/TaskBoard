@@ -2,3 +2,4 @@ db.config.json
 server/vendor/*
 !server/vendor/vendor.json
 \.vscode/launch\.json
+node_modules
