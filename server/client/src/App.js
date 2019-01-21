@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import Header from "./components/header/Header";
-import Landing from "./components/landing/Landing";
+import Header from "./components/partials/Header";
+import Footer from "./components/partials/Footer";
+import Main from "./components/Main";
 
 
 class App extends Component {
@@ -9,7 +10,8 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <Landing />
+        <Main />
+        <Footer />
       </div>
     );
   }

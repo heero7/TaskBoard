@@ -7,7 +7,9 @@ class Landing extends Component {
     return (
       <div>
         <HeroSection />
-        <ExampleSection />
+        <PhotoSection />
+        <FeaturesSection />
+        <SignInUpSection />
       </div>
     );
   }
@@ -20,7 +22,7 @@ const HeroSection = () => {
       <div className="hero-content-area">
         <h1>TaskBoard</h1>
         <h3>Tasks prioritized like a pro.</h3>
-        <a href="#" class="btn">
+        <a href="#" className="btn">
           Sign up now!
         </a>
       </div>
@@ -28,30 +30,67 @@ const HeroSection = () => {
   )
 }
 
-const ExampleSection = () => {
-  const img1 = {
-    backgroundImage: "url(http://www.hotelalexzermatt.com/wp-content/uploads/2015/05/cr-visualimpact.ch-Rainer-Eder-1.jpg)"
-  }
-  const img2 = {
-    backgroundImage: "url(https://wallpapercave.com/wp/cYQcruq.jpg)"
-  }
-  const img3 = {
-    backgroundImage: "url(http://www.redresort.com/wp-content/uploads/2016/04/tabphoto-summer-1.jpg)"
-  }
-  const img4 = {
-    backgroundImage: "url(https://www.thephotoargus.com/wp-content/uploads/2013/01/mountain-02.jpg)"
-  }
+const PhotoSection = () => {
   return (
     <section className="destinations">
       <h3 className="title">Get the best out of your day</h3>
       <p>Organizing has never been easier</p>
       <hr/>
       <ul class="grid">
-        <li className="large" style={img2}></li>
-          <li className="small" style={img1}></li>
-          <li className="small" style={img3}></li>
-          <li className="large" style={img4}></li>
+          <li id="landing-block-1" className="large"></li>
+          <li id="landing-block-2" className="small"></li>
+          <li id="landing-block-3" className="small"></li>
+          <li id="landing-block-4" className="large"></li>
       </ul>
+    </section>
+  )
+}
+
+const FeaturesSection = () => {
+  return (
+    <section class="packages">
+            <h3 class="title">Features</h3>
+            <p>We offer a variety of features <br />Here are a few important features.</p>
+            <hr />
+            
+            <ul class="grid">
+                <li>
+                    <i class="fa fa-list fa-4x"></i>
+                    <h4>Create your Lists</h4>
+                    <p>Write down your own lists to keep track of and add them to your board!</p>
+                </li>
+                <li>
+                    <i class="fa fa-trophy fa-4x"></i>
+                    <h4>Achievements</h4>
+                    <p>From your finished tasks, create meaningful achievements.</p>
+                </li>
+                <li>
+                    <i class="fa fa-file-text fa-4x"></i>
+                    <h4>Write to resumes</h4>
+                    <p>Take those achievements and write them to your resume in the form of a blurb. Don't let those tasks go unoticed</p>
+                </li>
+                <li>
+                    <i class="fa fa-user fa-4x"></i>
+                    <h4>Create your account</h4>
+                    <p>By creating your account you can do this on the go anywhere</p>
+                </li>
+            </ul>
+        </section>
+  )
+}
+
+const SignInUpSection = () => {
+  return (
+    <section class="contact">
+      <h3 class="title">Learn More</h3>
+      <p>
+          Why just read about it, try it yourself today! 
+      </p>
+      <hr />
+      <div className="btns">
+        <a href="#" className="btn">Sign Up</a>
+        <a href="#" className="btn">Sign In</a>
+      </div>
     </section>
   )
 }

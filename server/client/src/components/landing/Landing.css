@@ -31,6 +31,12 @@ a.btn {
     font-weight: bold;
     text-align: center;
     background-color: #3f51b5;
+    padding : 20px;
+    margin: 10px;
+}
+
+.btns {
+    float: left;
 }
 
 .grid {
@@ -135,7 +141,7 @@ section:not(.hero):nth-child(even){
     background-size: cover;
     z-index: -1;
     background-color: #80a3db;
-    background-image: url("../images//taskboard-landing-background.jpg");
+    background-image: url("../images/taskboard-landing-background.jpg");
     opacity: 0.7;
 }
 
@@ -263,35 +269,6 @@ section:not(.hero):nth-child(even){
     }
 }
 
-@media (max-width: 1000px){
-    .contact form input {
-        flex-basis: 100%;
-        margin: 0 0 20px;
-    }
-}
-
-/* Contact section*/
-
-.contact form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 60%;
-}
-
-.contact form .btn {
-    padding: 18px 42px;
-}
-
-.contact form input {
-    padding: 15px;
-    margin-right: 30px;
-    font-size: 18px;
-    color: #555;
-    flex: 1;
-}
-
 @media (max-width: 1100px) {
     footer {
         flex-direction: column;
@@ -330,4 +307,17 @@ footer p {
     font-size: 16px;
     opacity: 0.6;
     align-self: center;
+}
+
+#landing-block-1 {
+    background-image: url("../images/landing-block-1.jpeg")
+}
+#landing-block-2 {
+    background-image: url("../images/landing-block-2.jpeg")
+}
+#landing-block-3 {
+    background-image: url("../images/landing-block-3.jpeg")
+}
+#landing-block-4 {
+    background-image: url("../images/landing-block-4.jpeg")
 }

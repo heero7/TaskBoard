@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
@@ -39,7 +40,7 @@ class Header extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" className={classes.grow}>
-              TaskBoard
+              <Link to="/">TaskBoard</Link>
             </Typography>
             <Button color="inherit">Login</Button>
           </Toolbar>
@@ -51,6 +52,6 @@ class Header extends Component {
 
 Header.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
+};
 
 export default withStyles(styles)(Header);
