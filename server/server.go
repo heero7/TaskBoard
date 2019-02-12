@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"time"
 
+	handlers "github.com/gorilla/handlers"
 	gorilla "github.com/gorilla/mux"
 )
 
@@ -62,12 +63,13 @@ func (server *Server) createUser(writer http.ResponseWriter, request *http.Reque
 }
 
 func (server *Server) signIn(writer http.ResponseWriter, request *http.Request) {
+	//setupResponse(&writer, request)
+
 	decoder := json.NewDecoder(request.Body)
 	var u models.User
 
 	err := decoder.Decode(&u)
 
-	fmt.Println(u.Email)
 	if err != nil && err == io.EOF {
 		// send bad response
 		br := util.Message(http.StatusBadRequest, "Empty request body")
@@ -132,6 +134,12 @@ func (server *Server) Start() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+
 	fmt.Println("Starting server.. on port", httpServer.Addr)
-	log.Fatal(httpServer.ListenAndServe())
+	// log.Fatal(httpServer.ListenAndServe())
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(server.handler())))
 }

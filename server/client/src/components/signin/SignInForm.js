@@ -1,6 +1,9 @@
 import React from "react";
 import "./SignInForm.css";
 
+// TEST 
+import axios from "axios";
+
 class Logo extends React.Component {
   render() {
     return (
@@ -21,9 +24,9 @@ class Input extends React.Component {
           name={this.props.name}
           placeholder={this.props.placeholder}
           required
-          autocomplete="false"
+          autoComplete="false"
         />
-        <label for={this.props.name} />
+        <label htmlFor={this.props.name} />
       </div>
     );
   }
@@ -31,16 +34,40 @@ class Input extends React.Component {
 
 // Modal
 class Modal extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
   handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target.value);
+    let data = new FormData(e.target);
+    let credentials = {
+      email : "",
+      password : ""
+    };
+
+    // todo: check to see if the user values are not valid
+
+    if (!data.get("username") || !data.get("password")) {
+      console.error("Missing field");
+      return;
+    }
+
+    console.log("Valid fields entered..");
+
+    credentials.email = data.get("username");
+    credentials.password = data.get("password");
+
+    axios.post("http://localhost:8080/api/v1/signin", credentials)
+    .then(res => { console.log(res.data); })
+    .catch(err => { console.log(err); });
   }
 
   render() {
     return (
       <div className="Modal">
         <Logo />
-        <form onSubmit={this.props.onSubmit}>
+        <form onSubmit={this.handleSubmit} method="POST">
           <Input type="text" name="username" placeholder="username" />
           <Input type="password" name="password" placeholder="password" />
           <button> Sign In</button>
