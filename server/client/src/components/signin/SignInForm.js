@@ -1,39 +1,16 @@
 import React from "react";
+
+import Input from "../reusables/Input";
+import Logo from "../reusables/Logo";
+
 import "./SignInForm.css";
 
 // TEST 
 import axios from "axios";
 
-class Logo extends React.Component {
-  render() {
-    return (
-      <div className="logo">
-        <i className="fa fa-bug" aria-hidden="true" />
-        <span> Login </span>
-      </div>
-    );
-  }
-}
-
-class Input extends React.Component {
-  render() {
-    return (
-      <div className="Input">
-        <input
-          type={this.props.type}
-          name={this.props.name}
-          placeholder={this.props.placeholder}
-          required
-          autoComplete="false"
-        />
-        <label htmlFor={this.props.name} />
-      </div>
-    );
-  }
-}
 
 // Modal
-class Modal extends React.Component {
+class SignInModal extends React.Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -91,7 +68,7 @@ class SignInForm extends React.Component {
   render() {
     return (
       <div className="background">
-        <Modal onSubmit={this.handleSubmit} />
+        <SignInModal onSubmit={this.handleSubmit} />
       </div>
     );
   }
