@@ -8,14 +8,13 @@ import { Navbar } from "react-materialize";
 
 class Header extends React.Component {
   renderNavLinks() {
+    console.log(this.props);
     switch(this.props.auth) {
-      case null:
-        return;
-      case false:
+      case false || null:
         return [
-          <li><Link to={"/"}>Home</Link></li>,
-          <li><Link to={"/signin"}>Sign In</Link></li>,
-          <li><Link to={"/signup"}>Sign Up</Link></li>
+          <li key={1}><Link to={"/"}>Home</Link></li>,
+          <li key={2}><Link to={"/signin"}>Sign In</Link></li>,
+          <li key={3}><Link to={"/signup"}>Sign Up</Link></li>
         ];
       default: 
         return [

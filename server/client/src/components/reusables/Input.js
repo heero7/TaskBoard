@@ -9,9 +9,9 @@ class Input extends React.Component {
             name={this.props.name}
             placeholder={this.props.placeholder}
             required
-            autocomplete="false"
+            autoComplete="false"
           />
-          <label for={this.props.name} />
+          <label htmlFor={this.props.name} />
         </div>
       );
     }

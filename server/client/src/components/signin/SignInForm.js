@@ -15,6 +15,8 @@ class SignInModal extends React.Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+
   handleSubmit(e) {
     e.preventDefault();
     let data = new FormData(e.target);
@@ -35,9 +37,12 @@ class SignInModal extends React.Component {
     credentials.email = data.get("username");
     credentials.password = data.get("password");
 
-    axios.post("http://localhost:8080/api/v1/signin", credentials)
-    .then(res => { console.log(res.data); })
-    .catch(err => { console.log(err); });
+    // ********* TEST *********
+    // axios.post("http://localhost:8080/api/v1/signin", credentials)
+    // .then(res => { console.log(res.data); })
+    // .catch(err => { console.log(err); });
+    // ********* END *********
+    console.log(this.props);
   }
 
   render() {
@@ -57,7 +62,7 @@ class SignInModal extends React.Component {
             <i className="fa fa-twitter" aria-hidden="true" />
           </button>
         </div>
-        <a href="#">Lost your password ?</a>
+        <a>Lost your password ?</a>
       </div>
     );
   }
