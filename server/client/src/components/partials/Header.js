@@ -1,24 +1,40 @@
 import React from "react";
+
+import { connect } from "react-redux";
+
 import { Link } from "react-router-dom";
 
 import { Navbar } from "react-materialize";
 
-// todo: create method to render correct links
+class Header extends React.Component {
+  renderNavLinks() {
+    switch(this.props.auth) {
+      case null:
+        return;
+      case false:
+        return [
+          <li><Link to={"/"}>Home</Link></li>,
+          <li><Link to={"/signin"}>Sign In</Link></li>,
+          <li><Link to={"/signup"}>Sign Up</Link></li>
+        ];
+      default: 
+        return [
+          <li><Link to={"/logout"}>Logout</Link></li>,
+        ];
+    }
+  }
 
-const Header = () => {
-  return (
-    <Navbar right>
-      <li>
-        <Link to={"/"}>Home</Link>
-      </li>
-      <li>
-        <Link to={"/signin"}>Sign In</Link>
-      </li>
-      <li>
-        <Link to={"/signup"}>Sign Up</Link>
-      </li>
-    </Navbar>
-  );
-};
+  render() {
+    return (
+      <Navbar right>
+        {this.renderNavLinks()}
+      </Navbar>
+    );
+  }
+}
 
-export default Header;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps)(Header);
