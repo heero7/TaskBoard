@@ -6,8 +6,12 @@ export const userService = {
     register
 };
 
-function login(credentials) {
-    axios.post("http://localhost:8080/signin", credentials)
+function login(email, password) {
+    let credentials = {
+        email : email,
+        password : password
+    };
+    return axios.post("http://localhost:8080/signin", credentials)
     .then(responseHandler)
     .then(user => {
         // store token in local storage for reference
