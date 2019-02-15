@@ -50,17 +50,17 @@ const PhotoSection = () => {
 
 const FeaturesSection = () => {
   return (
-    <section class="packages">
-      <h3 class="title">Features</h3>
+    <section className="packages">
+      <h3 className="title">Features</h3>
       <p>
         We offer a variety of features <br />
         Here are a few important features.
       </p>
       <hr />
 
-      <ul class="grid">
+      <ul className="grid">
         <li>
-          <i class="fa fa-list fa-4x" />
+          <i className="fa fa-list fa-4x" />
           <h4>Create your Lists</h4>
           <p>
             Write down your own lists to keep track of and add them to your
@@ -68,12 +68,12 @@ const FeaturesSection = () => {
           </p>
         </li>
         <li>
-          <i class="fa fa-trophy fa-4x" />
+          <i className="fa fa-trophy fa-4x" />
           <h4>Achievements</h4>
           <p>From your finished tasks, create meaningful achievements.</p>
         </li>
         <li>
-          <i class="fa fa-file-text fa-4x" />
+          <i className="fa fa-file-text fa-4x" />
           <h4>Write to resumes</h4>
           <p>
             Take those achievements and write them to your resume in the form of
@@ -81,7 +81,7 @@ const FeaturesSection = () => {
           </p>
         </li>
         <li>
-          <i class="fa fa-user fa-4x" />
+          <i className="fa fa-user fa-4x" />
           <h4>Create your account</h4>
           <p>By creating your account you can do this on the go anywhere</p>
         </li>
@@ -92,8 +92,8 @@ const FeaturesSection = () => {
 
 const SignInUpSection = () => {
   return (
-    <section class="contact">
-      <h3 class="title">Learn More</h3>
+    <section className="contact">
+      <h3 className="title">Learn More</h3>
       <p>Why just read about it, try it yourself today!</p>
       <hr />
       <div className="btns">

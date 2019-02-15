@@ -1,12 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
+import { userActions } from "../../actions";
 
 import Input from "../reusables/Input";
 
 import "./SignUpForm.css";
 
-import axios from "axios";
 
-class Modal extends React.Component {
+class SignUpForm extends React.Component {
     constructor() {
         super();
         this.handleSignUp = this.handleSignUp.bind(this);
@@ -28,33 +29,31 @@ class Modal extends React.Component {
         credentials.email = data.get("email");
         credentials.password = data.get("password");
 
-        axios.post("http://localhost:8080", credentials)
-        .then(res => console.log(data))
-        .catch(err => console.log(err));
+        const { dispatch } = this.props;
+        dispatch(userActions.register(credentials));
     }
 
-    render() {
-        return (
-            <div className="Modal">
-                <form onSubmit={this.handleSignUp} method="POST">
-                    <Input type="text" name="email" placeholder="email"/>
-                    <Input type="password" name="password" placeholder="password"/>
-                    <Input type="password" name="confirm" placeholder="password" />
-                    <button>Sign Up!</button>
-                </form>
-            </div>
-        );
-    }
-}
-
-class SignUpForm extends React.Component {
     render() {
         return (
             <div className="background">
-                <Modal onSubmit={this.handleSignUp}/>
+                <div className="Modal">
+                    <form onSubmit={this.handleSignUp} method="POST">
+                        <Input type="text" name="email" placeholder="email"/>
+                        <Input type="password" name="password" placeholder="password"/>
+                        <Input type="password" name="confirm" placeholder="password" />
+                        <button>Sign Up!</button>
+                    </form>
+                </div>
             </div>
         );
     }
 }
 
-export default SignUpForm;
+function mapStateToProps(state) {
+    const { registering } = state.registration;
+    return {
+        registering
+    };
+}
+
+export default connect(mapStateToProps)(SignUpForm);

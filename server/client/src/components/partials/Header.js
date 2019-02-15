@@ -1,15 +1,15 @@
 import React from "react";
-
-
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { Navbar } from "react-materialize";
 
 class Header extends React.Component {
   renderNavLinks() {
-    console.log(this.props);
-    switch(this.props.auth) {
+    console.log(this.props.authentication.loggedIn);
+    switch(this.props.authentication.loggedIn) {
       case undefined:
+      case false:
         return [
           <li key={1}><Link to={"/"}>Home</Link></li>,
           <li key={2}><Link to={"/signin"}>Sign In</Link></li>,
@@ -17,7 +17,7 @@ class Header extends React.Component {
         ];
       default: 
         return [
-          <li><Link to={"/logout"}>Logout</Link></li>,
+          <li key={4}><Link to={"/logout"}>Logout</Link></li>,
         ];
     }
   }
@@ -31,8 +31,11 @@ class Header extends React.Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps(state) {
+  const { authentication } = state;
+  return {
+    authentication
+  };
 }
 
-export default Header;
+export default connect(mapStateToProps)(Header);

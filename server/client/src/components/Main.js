@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 
 import { history } from "../util/history";
 
@@ -17,7 +17,7 @@ class Main extends React.Component {
    render() {
     return ( 
         <div>
-            <BrowserRouter history={history}>
+            <Router history={history}>
                 <div>
                     <Header />
                     <Route exact path="/" component={Landing}/>
@@ -25,7 +25,7 @@ class Main extends React.Component {
                     <Route path="/signup" component={SignUp}/>
                     <PrivateRoute path="/dashboard" component={Dashboard} />
                 </div>
-            </BrowserRouter>
+            </Router>
         </div>
     ); 
     }

@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom';
 import Main from "./components/Main";
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import reduxThunk from "redux-thunk";
+import { store } from "./util";
 
-
-//import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-        <Main />, 
+       <Provider store={store}>
+           <Main />
+        </Provider> , 
     document.getElementById('root')
 );
 
@@ -19,4 +19,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 // serviceWorker.unregister();
-//serviceWorker.register();
+serviceWorker.register();

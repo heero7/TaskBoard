@@ -7,11 +7,6 @@ import Logo from "../reusables/Logo";
 
 import "./SignInForm.css";
 
-// TEST 
-import axios from "axios";
-
-
-// Modal
 class SignInForm extends React.Component {
   constructor(props) {
     super(props);
@@ -41,12 +36,6 @@ class SignInForm extends React.Component {
 
     credentials.email = data.get("username");
     credentials.password = data.get("password");
-
-    // ********* TEST *********
-    // axios.post("http://localhost:8080/api/v1/signin", credentials)
-    // .then(res => { console.log(res.data); })
-    // .catch(err => { console.log(err); });
-    // ********* END *********
     
     const { dispatch } = this.props;
     dispatch(userActions.login(credentials.email, credentials.password));
@@ -70,7 +59,6 @@ class SignInForm extends React.Component {
               <i className="fa fa-twitter" aria-hidden="true" />
             </button>
           </div>
-          <a>Lost your password ?</a>
         </div>
       </div>
     );
