@@ -20,7 +20,7 @@ function login(email, password) {
             }, 
             error => {
                 dispatch(failure(error.toString()));
-                dispatch(alertActions.error(error.toString()));
+                dispatch(alertActions.failure(error.toString()));
             }
         );
     };
@@ -47,7 +47,7 @@ function register(credentials) {
             },
             error => {
                 dispatch(failure(error.toString()));
-                dispatch(alertActions.error(error.toString()));
+                // dispatch(alertActions.error(error.toString()));
             }
         );
     };
