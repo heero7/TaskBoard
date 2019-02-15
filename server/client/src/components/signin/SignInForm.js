@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { userActions } from "../../actions/userActions";
 
 import Input from "../reusables/Input";
 import Logo from "../reusables/Logo";
@@ -10,9 +12,14 @@ import axios from "axios";
 
 
 // Modal
-class SignInModal extends React.Component {
-  constructor() {
-    super();
+class SignInForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // If we are coming back here by anymeans
+    // reset the login status to original state
+    this.props.dispatch(userActions.logout());
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -32,8 +39,6 @@ class SignInModal extends React.Component {
       return;
     }
 
-    console.log("Valid fields entered..");
-
     credentials.email = data.get("username");
     credentials.password = data.get("password");
 
@@ -42,41 +47,41 @@ class SignInModal extends React.Component {
     // .then(res => { console.log(res.data); })
     // .catch(err => { console.log(err); });
     // ********* END *********
-    console.log(this.props);
+    
+    const { dispatch } = this.props;
+    dispatch(userActions.login(credentials.email, credentials.password));
   }
 
-  render() {
-    return (
-      <div className="Modal">
-        <Logo />
-        <form onSubmit={this.handleSubmit} method="POST">
-          <Input type="text" name="username" placeholder="username" />
-          <Input type="password" name="password" placeholder="password" />
-          <button> Sign In</button>
-        </form>
-        <div className="social-signin">
-          <button className="fb" onClick={this.props.onClick}>
-            <i className="fa fa-facebook" aria-hidden="true" />
-          </button>
-          <button className="tw" onClick={this.props.onClick}>
-            <i className="fa fa-twitter" aria-hidden="true" />
-          </button>
-        </div>
-        <a>Lost your password ?</a>
-      </div>
-    );
-  }
-}
-
-
-class SignInForm extends React.Component {
   render() {
     return (
       <div className="background">
-        <SignInModal onSubmit={this.handleSubmit} />
+        <div className="Modal">
+          <Logo />
+          <form onSubmit={this.handleSubmit} method="POST">
+            <Input type="text" name="username" placeholder="username" />
+            <Input type="password" name="password" placeholder="password" />
+            <button> Sign In</button>
+          </form>
+          <div className="social-signin">
+            <button className="fb" onClick={this.props.onClick}>
+              <i className="fa fa-facebook" aria-hidden="true" />
+            </button>
+            <button className="tw" onClick={this.props.onClick}>
+              <i className="fa fa-twitter" aria-hidden="true" />
+            </button>
+          </div>
+          <a>Lost your password ?</a>
+        </div>
       </div>
     );
   }
 }
 
-export default SignInForm;
+function mapStateToProps(state) {
+  const { loggingIn } = state.authentication;
+  return {
+    loggingIn
+  };
+}
+
+export default connect(mapStateToProps)(SignInForm);

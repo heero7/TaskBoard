@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 class Dashboard extends React.Component {
     render() {
@@ -11,4 +12,14 @@ class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+function mapStateToProps(state) {
+    const { authentication } = state;
+    const { user } = authentication;
+    return {
+        user
+    };
+}
+
+
+
+export default connect(mapStateToProps)(Dashboard);

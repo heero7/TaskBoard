@@ -35,7 +35,7 @@ function responseHandler(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 logout();
-                location.reload(true); // basically resets the page to clear state and such
+                window.location.reload(true); // basically resets the page to clear state and such
             }
 
             const error = (data && data.message) || response.statusText;

@@ -1,7 +1,7 @@
 import { userConstants } from "../constants/user.constants";
 import { userService } from "../services";
 import { alertActions } from "./";
-import { history } from "../helpers";
+import { history } from "../util";
 
 export const userActions = {
     login,
@@ -27,7 +27,7 @@ function login(email, password) {
 
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user }};
     function success(user) { return { type: userConstants.LOGIN_SUCCESS, user }};
-    function failure(user) { return { type: userConstants.LOGIN_FAILURE, error }};
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error }};
 }
 
 function logout() {

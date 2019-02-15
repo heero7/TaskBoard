@@ -1,4 +1,4 @@
-import { alertActions, alertConstants } from "../constants";
+import { alertConstants } from "../constants";
 
 // All available actions, exported into one object
 export const alertActions = {
