@@ -6,6 +6,7 @@ import { Navbar } from "react-materialize";
 import { userActions } from "../../actions";
 
 import { Button } from "react-materialize";
+import "./Header.css";
 
 class Header extends React.Component {
   constructor(props) {

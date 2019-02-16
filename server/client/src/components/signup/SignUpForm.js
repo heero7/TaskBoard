@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { userActions } from "../../actions";
 
 import Input from "../reusables/Input";
+import Logo from "../reusables/Logo";
+import { Button } from "react-materialize";
+//import TBButton from "../reusables/TBButton";
 
 import "./SignUpForm.css";
 
@@ -37,11 +40,12 @@ class SignUpForm extends React.Component {
         return (
             <div className="background">
                 <div className="Modal">
+                    <Logo title="Register"/>
                     <form onSubmit={this.handleSignUp} method="POST">
                         <Input type="text" name="email" placeholder="email"/>
                         <Input type="password" name="password" placeholder="password"/>
-                        <Input type="password" name="confirm" placeholder="password" />
-                        <button>Sign Up!</button>
+                        <Input type="password" name="confirm" placeholder="re-type password" />
+                        <Button className="modal-button">Sign Up</Button>
                     </form>
                 </div>
             </div>

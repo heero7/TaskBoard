@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../actions/userActions";
 
 import Input from "../reusables/Input";
 import Logo from "../reusables/Logo";
 
+import { Button } from "react-materialize";
 import "./SignInForm.css";
 
 class SignInForm extends React.Component {
@@ -18,25 +20,30 @@ class SignInForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
+  /**
+   * Handle the submitting of the data and
+   * call dispatch the action to login. First,
+   * check if we have a user and password entered
+   * @param {Event} e
+   */
   handleSubmit(e) {
     e.preventDefault();
     let data = new FormData(e.target);
     let credentials = {
-      email : "",
-      password : ""
+      email: "",
+      password: ""
     };
 
     // todo: check to see if the user values are not valid
 
     if (!data.get("username") || !data.get("password")) {
-      console.error("Missing field");
+      console.error("Missing field, check form fields");
       return;
     }
 
     credentials.email = data.get("username");
     credentials.password = data.get("password");
-    
+
     const { dispatch } = this.props;
     dispatch(userActions.login(credentials.email, credentials.password));
   }
@@ -45,20 +52,13 @@ class SignInForm extends React.Component {
     return (
       <div className="background">
         <div className="Modal">
-          <Logo />
+          <Logo title="Login" login={true}/>
           <form onSubmit={this.handleSubmit} method="POST">
             <Input type="text" name="username" placeholder="username" />
             <Input type="password" name="password" placeholder="password" />
-            <button> Sign In</button>
+            <Button className="modal-button"> Sign In</Button>
           </form>
-          <div className="social-signin">
-            <button className="fb" onClick={this.props.onClick}>
-              <i className="fa fa-facebook" aria-hidden="true" />
-            </button>
-            <button className="tw" onClick={this.props.onClick}>
-              <i className="fa fa-twitter" aria-hidden="true" />
-            </button>
-          </div>
+          <Link  to={"/signup"}><Button className="modal-button">Sign Up</Button></Link>
         </div>
       </div>
     );
