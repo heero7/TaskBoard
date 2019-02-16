@@ -1,4 +1,4 @@
-import axios from "axios";
+//import axios from "axios";
 
 export const userService = {
     login,
@@ -11,7 +11,13 @@ function login(email, password) {
         email : email,
         password : password
     };
-    return axios.post("http://localhost:8080/signin", credentials)
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials)
+    };
+    return fetch("http://localhost:8080/api/v1/signin", requestOptions)
     .then(responseHandler)
     .then(user => {
         // store token in local storage for reference
@@ -25,8 +31,14 @@ function logout() {
     localStorage.removeItem("user");
 }
 
-function register(credentials) {
-    return axios.post("http://localhost:8080/", credentials).then(responseHandler);
+async function register(credentials) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials)
+    };
+    const response = await fetch("http://localhost:8080/api/v1/signup", requestOptions);
+    return responseHandler(response);
 }
 
 function responseHandler(response) {

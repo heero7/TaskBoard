@@ -3,7 +3,6 @@ package repository
 import (
 	"TaskBoard/server/models"
 	"TaskBoard/server/util"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -36,11 +35,10 @@ func generateHashPassword(password string) string {
 // CreateUser : Create a user with an email and password
 // todo: should we return a UID?
 func (userRepo *UserRepository) CreateUser(email string, password string) map[string]interface{} {
-	fmt.Println("#SQL - INSERT#") //todo: Change this to some better logging
+	//fmt.Println("#SQL - INSERT#") //todo: Change this to some better logging
 
 	uid, err := GenerateUID()
 	if err != nil {
-		fmt.Println("Error creating UID")
 		return util.Message(http.StatusInternalServerError, "Error creating user")
 	}
 	hash := generateHashPassword(password)
@@ -90,8 +88,8 @@ func (userRepo *UserRepository) validate(user *models.User) map[string]interface
 	// check for duplicate email
 	check := &models.User{}
 	err := userRepo.database.Table("users").Where("email = ?", user.Email).First(check).Error
-	if err != nil {
-		return util.Message(http.StatusInternalServerError, "Error, please try again")
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return util.Message(http.StatusInternalServerError, err.Error())
 	}
 
 	if check.Email != "" {

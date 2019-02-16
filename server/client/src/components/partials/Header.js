@@ -3,8 +3,22 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { Navbar } from "react-materialize";
+import { userActions } from "../../actions";
+
+import { Button } from "react-materialize";
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    const { dispatch } = this.props;
+    dispatch(userActions.logout());
+  }
+
+
   renderNavLinks() {
     console.log(this.props.authentication.loggedIn);
     switch(this.props.authentication.loggedIn) {
@@ -17,7 +31,7 @@ class Header extends React.Component {
         ];
       default: 
         return [
-          <li key={4}><Link to={"/logout"}>Logout</Link></li>,
+          <li key={4} onClick={this.handleLogout}><Button>Logout</Button></li>,
         ];
     }
   }
