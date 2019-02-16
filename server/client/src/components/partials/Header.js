@@ -20,7 +20,6 @@ class Header extends React.Component {
 
 
   renderNavLinks() {
-    console.log(this.props.authentication.loggedIn);
     switch(this.props.authentication.loggedIn) {
       case undefined:
       case false:
