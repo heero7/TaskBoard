@@ -25,7 +25,7 @@ const HeroSection = () => {
         <h1>TaskBoard</h1>
         <h3>Tasks prioritized like a pro.</h3>
         <Button>
-          <Link to={"/signup"}>Sign Up</Link>
+          <Link className="link" to={"/signup"}>Sign Up</Link>
         </Button>
       </div>
     </section>
@@ -97,11 +97,11 @@ const SignInUpSection = () => {
       <p>Why just read about it, try it yourself today!</p>
       <hr />
       <div className="btns">
-        <Button>
-          <Link to={"/signin"}>Sign In</Link>
+        <Button id="signin">
+          <Link className="link" to={"/signin"}>Sign In</Link>
         </Button>
-        <Button>
-          <Link to={"/signup"}>Sign Up</Link>
+        <Button id="signup">
+          <Link className="link" to={"/signup"}>Sign Up</Link>
         </Button>
       </div>
     </section>

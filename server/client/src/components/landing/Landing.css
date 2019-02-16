@@ -14,6 +14,20 @@ html {
     font: normal 16px sans-serif;
 }
 
+.link {
+    text-decoration: none;
+    opacity: 0.75;
+    color: white;
+}
+
+#signin {
+    margin : 5px;
+}
+
+#signup {
+    margin : 5px;
+}
+
 a:hover {
     opacity: 1;
 }
