@@ -36,6 +36,12 @@ Start the app
 ```
 go run main.go server.go middleware.go
 ```
+## Debug
+VSCode
+- Open from the server folder
+- Configure launch.json for Go
+- Start debugging
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
