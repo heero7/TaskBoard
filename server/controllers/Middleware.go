@@ -1,7 +1,8 @@
-package main
+package controllers
 
 import (
 	"TaskBoard/server/models"
+	"TaskBoard/server/util"
 	"context"
 	"net/http"
 	"strings"
@@ -41,8 +42,8 @@ func jwtAuthMiddleware(nextMethod http.Handler) http.Handler {
 		// Missing token in header
 		if tkHeader == "" {
 			w.WriteHeader(http.StatusForbidden)
-			br := createResponse(http.StatusForbidden, "Missing auth token!")
-			w.Write(br)
+			br := util.Message(http.StatusForbidden, "Missing auth token!")
+			util.Respond(w, br)
 			return
 		}
 
@@ -51,8 +52,8 @@ func jwtAuthMiddleware(nextMethod http.Handler) http.Handler {
 		split := strings.Split(tkHeader, " ")
 		if len(split) != 2 {
 			w.WriteHeader(http.StatusForbidden)
-			br := createResponse(http.StatusForbidden, "Incorrect or malformed auth token")
-			w.Write(br)
+			br := util.Message(http.StatusForbidden, "Incorrect or malformed auth token")
+			util.Respond(w, br)
 			return
 		}
 
@@ -68,16 +69,16 @@ func jwtAuthMiddleware(nextMethod http.Handler) http.Handler {
 
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
-			br := createResponse(http.StatusForbidden, "Invalid auth token")
-			w.Write(br)
+			br := util.Message(http.StatusForbidden, "Invalid auth token")
+			util.Respond(w, br)
 			return
 		}
 
 		// Check if the token is valid
 		if !token.Valid {
 			w.WriteHeader(http.StatusForbidden)
-			br := createResponse(http.StatusForbidden, "Invalid auth token")
-			w.Write(br)
+			br := util.Message(http.StatusForbidden, "Invalid auth token")
+			util.Respond(w, br)
 			return
 		}
 

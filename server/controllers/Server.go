@@ -1,4 +1,4 @@
-package main
+package controllers
 
 import (
 	"TaskBoard/server/models"
@@ -19,17 +19,6 @@ import (
 type Server struct {
 	config      *models.Config
 	userService *service.UserService
-}
-
-type response struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-}
-
-func createResponse(status int, message string) []byte {
-	res := response{Status: status, Message: message}
-	js, _ := json.Marshal(&res)
-	return js
 }
 
 func (server *Server) createUser(writer http.ResponseWriter, request *http.Request) {
@@ -125,8 +114,6 @@ func NewServer(config *models.Config, userService *service.UserService) *Server 
 
 // Start : Start listening on the port then serve
 func (server *Server) Start() {
-	// might want to just do the handler and listenAndServe here
-	// Why? Need to do research and see if you can ensure Methods are POST
 	httpServer := &http.Server{
 		Addr:    ":8080",
 		Handler: server.handler(),
@@ -140,6 +127,5 @@ func (server *Server) Start() {
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
 	fmt.Println("Starting server.. on port", httpServer.Addr)
-	// log.Fatal(httpServer.ListenAndServe())
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(server.handler())))
 }

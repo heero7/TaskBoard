@@ -1,6 +1,7 @@
 package main
 
 import (
+	"TaskBoard/server/controllers"
 	"TaskBoard/server/models"
 	"TaskBoard/server/repository"
 	"TaskBoard/server/service"
@@ -24,7 +25,7 @@ func main() {
 
 	userService := service.NewUserService(config, userRepo)
 
-	server := NewServer(config, userService)
+	server := controllers.NewServer(config, userService)
 
 	server.Start()
 }
