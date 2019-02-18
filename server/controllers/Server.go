@@ -19,6 +19,7 @@ import (
 type Server struct {
 	config      *models.Config
 	userService *service.UserService
+	taskService *service.TaskService
 }
 
 func (server *Server) createUser(writer http.ResponseWriter, request *http.Request) {
