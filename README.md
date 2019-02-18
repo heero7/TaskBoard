@@ -1,5 +1,5 @@
-# TaskBoard
-A board to keep track of all your things to do :)
+# TaskBoard API
+Backend API for TaskBoard
 
 ## Description
 TaskBoard aims to make your life more organized at work and prioritizing your work to keep track of things you are doing.
@@ -7,9 +7,7 @@ TaskBoard aims to make your life more organized at work and prioritizing your wo
 ## Installation Prerequisites
 1. Make sure Go is installed, the latest version
 2. Install Postgres SQL Server
-3. Install React 
 ## Installation
-
 Use govendor for package management
 ```
 go get govendor 
@@ -34,7 +32,7 @@ Start the SQL server
 Start the app
 
 ```
-go run main.go server.go middleware.go
+go run main.go 
 ```
 ## Debug
 VSCode
