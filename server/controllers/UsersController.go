@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"TaskBoard/server/service"
 	"TaskBoard/server/models"
 	"TaskBoard/server/util"
 	"encoding/json"
@@ -10,12 +11,12 @@ import (
 
 // UserController : Handles all the routes for users
 type UserController struct {
-	server *Server
+	userService *service.UserService
 }
 
-func initUserController(server *Server) *UserController {
+func initUserController(us *service.UserService) *UserController {
 	return &UserController{
-		server: server,
+		userService: us,
 	}
 }
 
@@ -36,7 +37,7 @@ func (uc *UserController) signIn(writer http.ResponseWriter, request *http.Reque
 		return
 	}
 
-	res := uc.server.userService.CreateUser(u.Email, u.Password)
+	res := uc.userService.Authenticate(u.Email, u.Password)
 
 	if res["status"] == 500 {
 		// send bad response
@@ -66,7 +67,7 @@ func (uc *UserController) signUp(writer http.ResponseWriter, request *http.Reque
 		return
 	}
 
-	res := uc.server.userService.Authenticate(u.Email, u.Password)
+	res := uc.userService.Authenticate(u.Email, u.Password)
 
 	if res["status"] == 404 || res["status"] == 500 {
 		util.Respond(writer, res)

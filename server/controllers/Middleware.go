@@ -83,7 +83,7 @@ func jwtAuthMiddleware(nextMethod http.Handler) http.Handler {
 		}
 
 		//fmt.Sprintf("User %", tokenModel.UID) //Useful for monitoring
-		ctx := context.WithValue(r.Context(), contextKey("user"), tokenModel.UID)
+		ctx := context.WithValue(r.Context(), "user", tokenModel.UID)
 		r = r.WithContext(ctx)
 		nextMethod.ServeHTTP(w, r)
 	})

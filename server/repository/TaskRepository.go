@@ -73,7 +73,7 @@ func (taskRepo *TaskRepository) GetAllTasks(userid string) map[string]interface{
 }
 
 // UpdateTaskByID : Update the task
-func (taskRepo *TaskRepository) UpdateTaskByID(taskid string) map[string]interface{} {
+func (taskRepo *TaskRepository) UpdateTaskByID(taskid string, updatedTask models.Task) map[string]interface{} {
 	//todo: Will need a clever way of implementing this
 	taskRes := taskRepo.GetTaskByID(taskid)
 	if taskRes["status"] == 500 {
@@ -81,7 +81,7 @@ func (taskRepo *TaskRepository) UpdateTaskByID(taskid string) map[string]interfa
 		return taskRes
 	}
 	task := taskRes["task"]
-	err := taskRepo.database.Model(&task).Update("name", "priority").Error
+	err := taskRepo.database.Model(&task).UpdateColumns(updatedTask).Error
 
 	if err != nil {
 		log.Println("Could not update task")
@@ -89,4 +89,14 @@ func (taskRepo *TaskRepository) UpdateTaskByID(taskid string) map[string]interfa
 	}
 
 	return util.Message(http.StatusAccepted, "Success updating task")
+}
+
+// DeleteTaskByID :
+func (taskRepo *TaskRepository) DeleteTaskByID(taskid string) map[string]interface{} {
+	return nil
+}
+
+// DeleteAllTasks :
+func (taskRepo *TaskRepository) DeleteAllTasks() map[string]interface{} {
+	return nil
 }

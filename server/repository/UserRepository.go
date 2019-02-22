@@ -70,9 +70,9 @@ func (userRepo *UserRepository) CreateUser(email string, password string) map[st
 }
 
 func (userRepo *UserRepository) createToken(uid string) string {
-	tkModel := models.Token{UID: uid}
+	tkModel := &models.Token{UID: uid}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tkModel)
-	tokenString, _ := token.SignedString([]byte("password"))
+	tokenString, _ := token.SignedString([]byte("secret"))
 	return tokenString
 }
 

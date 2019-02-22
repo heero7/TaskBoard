@@ -23,9 +23,13 @@ func main() {
 
 	userRepo := repository.NewUserRepository(db)
 
+	taskRepo := repository.NewTaskRepository(db)
+
 	userService := service.NewUserService(config, userRepo)
 
-	server := controllers.NewServer(config, userService)
+	taskService := service.NewTaskService(config, taskRepo)
+
+	server := controllers.NewServer(config, userService, taskService)
 
 	server.Start()
 }
