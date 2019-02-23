@@ -21,4 +21,15 @@ func (service *TaskService) CreateTask(name string, priority int, uid string) ma
 	return service.taskRepo.CreateTask(name, priority, uid)
 }
 
+// GetTaskByID : Gets a task by Id
+func (service *TaskService) GetTaskByID(taskId string) map[string]interface{} {
+	return service.taskRepo.GetTaskByID(taskId)
+}
 
+func (service *TaskService) GetAllTasks(uid string) map[string]interface{} {
+	return service.taskRepo.GetAllTasks(uid)
+}
+
+func (service *TaskService) DeleteTask(uid string) map[string]interface{} {
+	return service.taskRepo.DeleteTaskByID(uid)
+}

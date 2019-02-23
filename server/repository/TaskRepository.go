@@ -91,12 +91,26 @@ func (taskRepo *TaskRepository) UpdateTaskByID(taskid string, updatedTask models
 	return util.Message(http.StatusAccepted, "Success updating task")
 }
 
-// DeleteTaskByID :
+// DeleteTaskByID : Deletes a task by id
 func (taskRepo *TaskRepository) DeleteTaskByID(taskid string) map[string]interface{} {
-	return nil
+	task := &models.Task{}
+	err := taskRepo.database.Unscoped().Where("t_id = ?", taskid).Delete(task).Error
+	if err != nil {
+		log.Println("Error finding task and deleting", taskid, err.Error())
+		return util.Message(http.StatusInternalServerError, "Could not delete task")
+	}
+
+	return util.Message(http.StatusAccepted, "Successfully deleted task")
 }
 
 // DeleteAllTasks :
-func (taskRepo *TaskRepository) DeleteAllTasks() map[string]interface{} {
-	return nil
+func (taskRepo *TaskRepository) DeleteAllTasks(uid string) map[string]interface{} {
+	task := &models.Task{}
+	err := taskRepo.database.Unscoped().Where("uid = ?", uid).Delete(task).Error
+	if err != nil {
+		log.Println("Error deleting all tasks for user", uid, err.Error())
+		return util.Message(http.StatusInternalServerError, "Could not delete tasks for user")
+	}
+
+	return util.Message(http.StatusAccepted, "Successfully deleted tasks for user")
 }

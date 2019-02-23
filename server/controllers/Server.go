@@ -41,14 +41,9 @@ func (server *Server) handler() *gorilla.Router {
 
 	// List all tasks for a given user.. UID should be in the context of the JWT token
 	r.HandleFunc("/api/v1/tasks", tc.createTask).Methods("POST")
-	r.HandleFunc("/api/v1/tasks", func(w http.ResponseWriter, r *http.Request) {
-		res := util.Message(http.StatusNoContent, "Not yet implemented...")
-		util.Respond(w, res)
-	}).Methods("GET")
-	r.HandleFunc("/api/v1/tasks/{id}", func(w http.ResponseWriter, r *http.Request) {
-		res := util.Message(http.StatusNoContent, "Not yet implemented...")
-		util.Respond(w, res)
-	}).Methods("GET")
+	r.HandleFunc("/api/v1/tasks", tc.getAllTasks).Methods("GET")
+	r.HandleFunc("/api/v1/tasks/{id}", tc.getTaskByID).Methods("GET")
+	r.HandleFunc("/api/v1/tasks/{id}", tc.deleteTask).Methods("DELETE")
 	// END TASK ROUTES
 	return r
 }

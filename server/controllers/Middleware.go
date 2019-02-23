@@ -12,6 +12,8 @@ import (
 
 type contextKey string
 
+// todo : figure out this underlying type
+// probably needs to be its own type or model
 func (c contextKey) String() string {
 	return string(c)
 }

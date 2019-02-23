@@ -5,8 +5,9 @@ import (
 	"TaskBoard/server/service"
 	"TaskBoard/server/util"
 	"encoding/json"
-	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // TasksController : Controller to hold all routes for tasks
@@ -23,7 +24,6 @@ func initTasksController(ts *service.TaskService) *TasksController {
 // CreateTask : Route to create one task
 func (tc *TasksController) createTask(writer http.ResponseWriter, request *http.Request) {
 	user := request.Context().Value("user").(string)
-	fmt.Println(user)
 	task := &models.Task{}
 
 	err := json.NewDecoder(request.Body).Decode(task)
@@ -41,12 +41,16 @@ func (tc *TasksController) createTask(writer http.ResponseWriter, request *http.
 
 // GetTaskByID : Route to get a task by Id
 func (tc *TasksController) getTaskByID(writer http.ResponseWriter, request *http.Request) {
-
+	taskID := mux.Vars(request)["id"]
+	res := tc.taskService.GetTaskByID(taskID)
+	util.Respond(writer, res)
 }
 
 // GetAllTasks : Route to get all tasks
 func (tc *TasksController) getAllTasks(writer http.ResponseWriter, request *http.Request) {
-
+	userID := request.Context().Value("user").(string)
+	res := tc.taskService.GetAllTasks(userID)
+	util.Respond(writer, res)
 }
 
 // UpdateTask : Route to update a task
@@ -56,5 +60,7 @@ func (tc *TasksController) updateTask(writer http.ResponseWriter, request *http.
 
 // DeleteTask : Route to delete a task
 func (tc *TasksController) deleteTask(writer http.ResponseWriter, request *http.Request) {
-
+	taskID := mux.Vars(request)["id"]
+	res := tc.taskService.DeleteTask(taskID)
+	util.Respond(writer, res)
 }
